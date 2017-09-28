@@ -1,27 +1,51 @@
-'use strict';
+"use strict";
 
-var AirTunesServer = require('nodetunes');
-var Speaker = require('speaker'); 
+var fs = require("fs");
+var path = require("path");
+var AirTunesServer = require("nodetunes");
+var airtunes = require("airtunes");
 
-var speaker = new Speaker({
-  channels: 2,
-  bitDepth: 16,
-  sampleRate: 44100,
+var config = JSON.parse(fs.readFileSync("config.json"));
+var server = new AirTunesServer({ serverName : config.groupName });
+var endpoints = config.endpoints;
+var devices;
+var currentStream;
+
+server.on("clientConnected", function(stream) {
+  console.log("clientConnected");
+  devices = [];
+  endpoints.forEach(function(host) {
+    devices.push(airtunes.add(host));
+  });
+  currentStream = stream;
+  stream.pipe(airtunes);
 });
 
-var server1 = new AirTunesServer({ serverName: 'NodeTunes 1' });
-var server2 = new AirTunesServer({ serverName: 'NodeTunes 2' });
-
-server1.on('clientConnected', function(stream) {
-  stream.pipe(speaker);
-});
-
-server2.on('clientConnected', function(stream) {
-  stream.on('data', function(d) {
-    process.stdout.write('\rWriting for Server 2: ' + d.length + ' bytes @ ' + new Date().getTime() + '\t');
+server.on("clientDisconnected", function() {
+  console.log("clientDisconnected");
+  currentStream.unpipe();
+  airtunes.stopAll(function() {
+    console.log("All devices stopped")
   });
 });
 
-server1.start();
-server2.start();
+server.on("error", function(err) {
+  console.log("Error: " + err.message );
+});
+
+server.on("metadataChange", function(metadata) {
+  console.log("Now playing \"" + metadata.minm + "\" by " + metadata.asar + " from \"" + metadata.asal + "\"");
+});
+
+server.on("volumeChange", function(volume) {
+  volume = (volume + 30) / 30 * 100
+  console.log("volumeChange " + volume);
+  devices.forEach(function(device) {
+    device.setVolume(volume);
+  });
+});
+
+server.start();
+
+console.log(config.groupName + " started");
 

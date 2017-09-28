@@ -1,0 +1,8 @@
+{
+  "groupName": "All Speakers",
+  "endpoints": [
+    "10.0.1.7",
+    "10.0.1.15"
+  ]
+}
+
