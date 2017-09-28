@@ -1,0 +1,15 @@
+{
+  "name": "airplay",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sdhulipalla",
+  "license": "ISC",
+  "dependencies": {
+    "nodetunes": "git://github.com/Kolky/nodetunes.git#master",
+    "speaker": "^0.4.0"
+  }
+}
