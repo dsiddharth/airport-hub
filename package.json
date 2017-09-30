@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "airtunes": "github:marcokeur/node_airtunes",
-    "nodetunes": "git://github.com/Kolky/nodetunes.git#master",
+    "nodetunes": "git://github.com/Kolky/nodetunes.git#master"
   }
 }
