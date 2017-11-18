@@ -4,6 +4,7 @@ var fs = require("fs");
 var path = require("path");
 var AirTunesServer = require("nodetunes");
 var airtunes = require("airtunes");
+const { exec } = require('child_process');
 
 var config = JSON.parse(fs.readFileSync("config.json"));
 var server = new AirTunesServer({ serverName : config.groupName });
@@ -13,6 +14,8 @@ var currentStream;
 
 server.on("clientConnected", function(stream) {
   console.log("clientConnected");
+  exec('onkyo volume=50');
+  exec('onkyo source=pc');
   devices = [];
   endpoints.forEach(function(host) {
     devices.push(airtunes.add(host));
@@ -23,6 +26,8 @@ server.on("clientConnected", function(stream) {
 
 server.on("clientDisconnected", function() {
   console.log("clientDisconnected");
+  exec('onkyo source=aux1');
+  exec('onkyo volume=20');
   currentStream.unpipe();
   airtunes.stopAll(function() {
     console.log("All devices stopped")
