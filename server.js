@@ -15,7 +15,7 @@ var currentStream;
 server.on("clientConnected", function(stream) {
   console.log("clientConnected");
   exec('onkyo volume=50');
-  exec('onkyo source=aux');
+  exec('onkyo source=aux1');
   devices = [];
   endpoints.forEach(function(host) {
     devices.push(airtunes.add(host));
@@ -26,7 +26,7 @@ server.on("clientConnected", function(stream) {
 
 server.on("clientDisconnected", function() {
   console.log("clientDisconnected");
-  exec('onkyo source=aux1');
+  exec('onkyo source=cd');
   exec('onkyo volume=20');
   currentStream.unpipe();
   airtunes.stopAll(function() {
