@@ -26,7 +26,7 @@ server.on("clientConnected", function(stream) {
 
 server.on("clientDisconnected", function() {
   console.log("clientDisconnected");
-  exec('onkyo source=cd');
+  exec('onkyo source=cbl');
   exec('onkyo volume=20');
   currentStream.unpipe();
   airtunes.stopAll(function() {
