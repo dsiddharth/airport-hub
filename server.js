@@ -78,8 +78,8 @@ server2.on("volumeChange", function(volume) {
 	  console.log("volumeChange2 " + volume);
 	  device2.setVolume(volume);
 });
-server2.start()
+//server2.start()
 
 console.log(config.groupName + " started");
-console.log("Bedroom started");
+//console.log("Bedroom started");
 
